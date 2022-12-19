@@ -14,9 +14,7 @@ def find_priority_sum1(file_name: str) -> int:
     total = 0
     with open(file_name, "r") as file:
         for line in file:
-            line = line.strip()
-            right, left = line[: len(line) // 2], line[len(line) // 2 :]
-            common = set(right) & set(left)
+            common = set(line[: len(line) // 2]) & set(line[len(line) // 2 :])
             total += get_priority(*common)
     return total
 
@@ -29,7 +27,7 @@ def find_priority_sum2(file_name: str, per_group: int) -> int:
         for group in range(0, len(lines), per_group):
             common = reduce(
                 lambda a, b: a & b,
-                [set(lines[group + elf].strip()) for elf in range(per_group)],
+                (set(lines[group + elf].strip()) for elf in range(per_group)),
             )
             total += get_priority(*common)
     return total
