@@ -1,4 +1,5 @@
 """Solution for Day 3"""
+from functools import reduce
 
 
 def get_priority(char: str) -> int:
@@ -14,8 +15,7 @@ def find_priority_sum1(file_name: str) -> int:
     with open(file_name, "r") as file:
         for line in file:
             line = line.strip()
-            n = len(line)
-            right, left = line[: n // 2], line[n // 2 :]
+            right, left = line[: len(line) // 2], line[len(line) // 2 :]
             common = set(right) & set(left)
             total += get_priority(*common)
     return total
@@ -27,9 +27,10 @@ def find_priority_sum2(file_name: str, per_group: int) -> int:
     with open(file_name, "r") as file:
         lines = file.readlines()
         for group in range(0, len(lines), per_group):
-            common = {chr(i) for i in range(ord("A"), ord("z") + 1)}
-            for elf in range(per_group):
-                common &= set(lines[group + elf].strip())
+            common = reduce(
+                lambda a, b: a & b,
+                [set(lines[group + elf].strip()) for elf in range(per_group)],
+            )
             total += get_priority(*common)
     return total
 
