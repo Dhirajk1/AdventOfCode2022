@@ -8,6 +8,10 @@ def parse(file_name: list[str]) -> tuple[list[list[str]], list[list[int]]]:
 
     split_pt = lines.index("\n")
     initial_state, moves = lines[:split_pt], lines[split_pt + 1 :]
+    moves = map(
+        lambda move: [int(num) for num in re.split("move|from|to|\n", move) if num],
+        moves,
+    )
 
     stacks = int(initial_state[-1].split(" ")[-2])
     chunk_size = len(initial_state[0]) // stacks
@@ -25,24 +29,18 @@ def parse(file_name: list[str]) -> tuple[list[list[str]], list[list[int]]]:
 def make_moves1(file_name: str) -> str:
     """Makes moves according to situation 1"""
     towers, moves = parse(file_name)
-    for move in moves:
-        amount, source, dest = (
-            int(num) for num in re.split("move|from|to|\n", move) if num
-        )
+    for amount, start, end in moves:
         for _ in range(amount):
-            towers[dest - 1].append(towers[source - 1].pop())
+            towers[end - 1].append(towers[start - 1].pop())
     return "".join(stack[-1] for stack in towers)
 
 
 def make_moves2(file_name: str) -> str:
     """Makes moves according to situation 1"""
     towers, moves = parse(file_name)
-    for move in moves:
-        amount, source, dest = (
-            int(num) for num in re.split("move|from|to|\n", move) if num
-        )
-        towers[dest - 1] += towers[source - 1][-amount:]
-        del towers[source - 1][-amount:]
+    for amount, start, end in moves:
+        towers[end - 1] += towers[start - 1][-amount:]
+        del towers[start - 1][-amount:]
     return "".join(stack[-1] for stack in towers)
 
 
