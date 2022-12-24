@@ -53,7 +53,7 @@ def solve(file_name: str):
         start: tuple[int, int],
         stop_when: Callable,
         graph: dict[tuple[int, int], set[tuple[int, int]]],
-    ) -> dict[tuple[int, int], int]:
+    ) -> int:
         """Dijkstra's algorithm to find the all the optimal paths"""
         dist = {pt: float("inf") for pt in graph}
         dist[start] = 0
