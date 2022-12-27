@@ -1,4 +1,4 @@
-"""Solution for Darow 14"""
+"""Solution for Day 14"""
 import numpy as np
 
 SAND = 2
